@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.example.mvvmdemo.Model.Model;
 import com.example.mvvmdemo.R;
 
+import java.util.Observable;
+import java.util.Observer;
+
 
 public class MainActivity extends AppCompatActivity {
     Model model = new Model();
@@ -26,11 +29,17 @@ public class MainActivity extends AppCompatActivity {
         mainBtn = findViewById(R.id.MainBtn);
         textfield = findViewById(R.id.TextField);
 
+        model.addObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object arg) {
+                String data = ((Model)o).getInput();
+                textview.setText(data);
+            }
+        });
         mainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 model.setInput(textfield.getText().toString());
-                textview.setText(model.getInput());
             }
         });
     }
