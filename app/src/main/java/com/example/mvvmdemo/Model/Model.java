@@ -4,7 +4,7 @@ package com.example.mvvmdemo.Model;
 import java.util.Observable;
 
 public class Model extends Observable {
-    private String input;
+    private String input = "Hello";
 
 
     public String getInput() {

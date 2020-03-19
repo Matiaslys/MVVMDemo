@@ -16,23 +16,22 @@ import com.example.mvvmdemo.R;
 public class AndroidView extends AppCompatActivity {
     private AndroidLowerCaseViewModel lowerCaseViewModel;
 
-//    TextView textview;
-//    Button mainBtn;
-//    EditText textfield;
+    TextView textview;
+    Button mainBtn;
+    EditText textfield;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        textview = findViewById(R.id.textView);
-//        mainBtn = findViewById(R.id.MainBtn);
-//        textfield = findViewById(R.id.TextField);
+        textview = findViewById(R.id.textView);
+        mainBtn = findViewById(R.id.MainBtn);
+        textfield = findViewById(R.id.TextField);
 
         observeViewModel();
 
-        EditText inputText = (EditText) findViewById(R.id.TextField);
-        inputText.setText(lowerCaseViewModel.getPresentableData().getValue());
+        textfield.setText(lowerCaseViewModel.getPresentableData().getValue());
 
     }
 
@@ -42,8 +41,8 @@ public class AndroidView extends AppCompatActivity {
         final Observer<String> StringObserver = new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                TextView outputView = (TextView) findViewById(R.id.textView);
-                outputView.setText(s);
+
+                textview.setText(s);
             }
         };
 
@@ -51,9 +50,8 @@ public class AndroidView extends AppCompatActivity {
     }
 
     public void enterInput(View view) {
-        EditText inputText = (EditText) findViewById(R.id.TextField);
 
-        String input = inputText.getText().toString();
+        String input = textfield.getText().toString();
         lowerCaseViewModel.setInput(input);
     }
 }
