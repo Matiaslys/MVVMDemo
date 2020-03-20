@@ -1,21 +1,19 @@
 package com.example.mvvmdemo.View;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
 import java.util.Observable;
 import java.util.Observer;
 
 import com.example.mvvmdemo.Model.Model;
 
-public class AndroidLowerCaseViewModel extends ViewModel {
+public class LowerCasePresenter extends Observable {
 
-   private MutableLiveData<String> presentableData = new MutableLiveData<>();
+   private String presentableData;
+
    private Model model = new Model();
 
-   public AndroidLowerCaseViewModel() {
+   public LowerCasePresenter() {
         observeModel(model);
-        presentableData.setValue(getTransformedData(model.getInput()));
+        presentableData = getTransformedData(model.getInput());
 
    }
 
@@ -25,7 +23,10 @@ public class AndroidLowerCaseViewModel extends ViewModel {
            public void update(Observable o, Object arg) {
                if (o instanceof Model) {
                    String data = ((Model) o).getInput();
-                   presentableData.setValue(getTransformedData(data));
+                   presentableData = getTransformedData(data);
+
+                   LowerCasePresenter.super.setChanged();
+                   LowerCasePresenter.super.notifyObservers();
                }
            }
        });
@@ -35,8 +36,7 @@ public class AndroidLowerCaseViewModel extends ViewModel {
        return data.toLowerCase();
    }
 
-
-   public MutableLiveData<String> getPresentableData() {
+   public String getPresentableData() {
        return presentableData;
    }
 

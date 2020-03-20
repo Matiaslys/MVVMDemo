@@ -1,8 +1,6 @@
 package com.example.mvvmdemo.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,9 +10,11 @@ import android.widget.TextView;
 
 import com.example.mvvmdemo.R;
 
+import java.util.Observable;
+import java.util.Observer;
 
 public class AndroidView extends AppCompatActivity {
-    private AndroidLowerCaseViewModel lowerCaseViewModel;
+    private LowerCasePresenter lowerCaseViewModel = new LowerCasePresenter();
 
     TextView textview;
     Button mainBtn;
@@ -30,23 +30,23 @@ public class AndroidView extends AppCompatActivity {
         textfield = findViewById(R.id.TextField);
 
         observeViewModel();
+        textview.setText(lowerCaseViewModel.getPresentableData());
 
-        textfield.setText(lowerCaseViewModel.getPresentableData().getValue());
+        textfield.setText(lowerCaseViewModel.getPresentableData());
 
     }
 
     private void observeViewModel() {
-        lowerCaseViewModel = new ViewModelProvider(this).get(AndroidLowerCaseViewModel.class);
-
-        final Observer<String> StringObserver = new Observer<String>() {
+        lowerCaseViewModel.addObserver(new Observer() {
             @Override
-            public void onChanged(String s) {
-
-                textview.setText(s);
+            public void update(Observable o, Object arg) {
+                if (o instanceof LowerCasePresenter) {
+                    String data = ((LowerCasePresenter) o).getPresentableData();
+                    textview.setText(data);
+                }
             }
-        };
+        });
 
-        lowerCaseViewModel.getPresentableData().observe(this, StringObserver);
     }
 
     public void enterInput(View view) {
